@@ -99,7 +99,7 @@ const Dish = sequelize.define('dish', {
 
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 
-sequelize.sync();
+//sequelize.sync();
 
 
 
