@@ -2,6 +2,10 @@ branch-defaults:
   master:
     environment: hunqry
     group_suffix: null
+environment-defaults:
+  hunqry:
+    branch: null
+    repository: null
 global:
   application_name: hunqry_backend
   branch: null
