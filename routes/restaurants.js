@@ -3,6 +3,7 @@ const router = express.Router();
 const Restaurant = require('../models').Restaurant;
 const Dish = require('../models').Dish;
 const AddOn = require('../models').AddOn;
+const Section = require('../models').Section;
 
 /* POST add new restaurant */
 router.post('/addNew', function(req, res) {
@@ -30,22 +31,48 @@ router.post('/addNew', function(req, res) {
 router.post('/addDish', function(req, res) {
 	var source = '[POST /restaurants/addDish]';
 	let restaurantId = req.body.restaurantId;
+	let section = req.body.section;
 
 	Restaurant.findById(restaurantId)
 	.then(restaurant => {
 		Dish.create({
 			name: req.body.name,
 		  	displayPicture: req.body.displayPicture,
-		  	category: req.body.category,
 		  	price: req.body.price,
 		  	description: req.body.description
 		})
 		.then(dish => {
-			restaurant.addDishes(dish)
-			.then(dish => {
-				res.json({
-			  		status: 'Success'
-			  	});	
+			Section.findOrCreate({
+				where: {
+					name: section
+				}
+			})
+			.then(section => {
+				//console.log(section);
+				section[0].addDishes(dish)
+				.then(() =>{
+					restaurant.addSections(section[0])
+					.then(() => {
+						restaurant.addDishes(dish)
+						.then(dish => {
+							res.json({
+						  		status: 'Success'
+						  	});	
+						})
+						.catch(e => {
+							console.log(e);
+							res.status(500).send("" + e);
+						})
+					})
+					.catch(e => {
+						console.log(e);
+						res.status(500).send("" + e);
+					})
+				})
+				.catch(e => {
+					console.log(e);
+					res.status(500).send("" + e);
+				})
 			})
 			.catch(e => {
 				console.log(e);
@@ -191,5 +218,43 @@ router.get('/:restaurantId/addOns', function(req, res) {
 		res.status(500).send("" + e);
 	})
 })
+
+
+router.get('/:restaurantId/menu', function(req, res) {
+ 	var source = '[GET /restaurants/menu]';
+ 	let restaurantId = req.params.restaurantId;
+	
+	Restaurant.findOne({
+	    where: {id: restaurantId},
+	    attributes: {exclude: ['createdAt','updatedAt']},
+	    include: [{
+	      model: Section,
+	      as: 'Sections',
+	      attributes: {exclude: ['createdAt','updatedAt']},
+	      through: {attributes:[]},
+	      include: [{
+	        model: Dish,
+	        as: 'Dishes',
+	        attributes: {exclude: ['createdAt','updatedAt']},
+	        through: {attributes:[]},
+	        include: [{
+		        model: AddOn,
+		        as: 'AddOns',
+		        attributes: {exclude: ['createdAt','updatedAt']},
+		        through: {attributes:[]},
+		    }]
+	      }]
+	    }],
+	  })
+	.then(restaurants => {
+		res.send(restaurants);
+	})
+	.catch(e => {
+		console.log(e);
+		res.status(500).send("" + e);
+	})
+})
+
+
 
 module.exports = router;

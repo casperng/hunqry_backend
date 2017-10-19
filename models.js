@@ -77,13 +77,9 @@ const Dish = sequelize.define('dish', {
     allowNull: false
   },
   displayPicture: {
-	type: Sequelize.STRING,
-	allowNull: true,
-	unique: true
-  },
-  category: {
   	type: Sequelize.STRING,
-	allowNull: false
+  	allowNull: true,
+  	unique: true
   },
   price: {
   	type: Sequelize.REAL,
@@ -120,19 +116,32 @@ const Table = sequelize.define('table', {
 });
 
 // const Order = sequelize.define('order', {
-//   name: {
-//     type: Sequelize.STRING,
-//     allowNull: false
+//   items: {
+
 //   },
+//   price: {
+//     type: Sequelize.REAL,
+//     allowNull: false
+//   }
 // });
+
+const Section = sequelize.define('section', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
 
 Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
 
+Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'});
+Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
+
 const DishAddOn = sequelize.define('dishAddOn', {});
 
-Dish.belongsToMany(AddOn, { through: 'dishAddOn' });
+Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
 AddOn.belongsToMany(Dish, { through: 'dishAddOn' });
 
 sequelize.sync();
@@ -141,3 +150,4 @@ module.exports.User = User;
 module.exports.Restaurant = Restaurant;
 module.exports.Dish = Dish;
 module.exports.AddOn = AddOn;
+module.exports.Section = Section;
