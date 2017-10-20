@@ -165,7 +165,7 @@ router.post('/addAddOnToDish', function(req, res) {
 
 
 router.get('/', function(req, res) {
- 	var source = '[GET /restaurants/]';
+ 	var source = '[GET /restaurants/]';	
 
  	Restaurant.findAll()
  	.then(restaurants => {

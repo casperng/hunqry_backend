@@ -144,7 +144,7 @@ const DishAddOn = sequelize.define('dishAddOn', {});
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
 AddOn.belongsToMany(Dish, { through: 'dishAddOn' });
 
-sequelize.sync();
+//sequelize.sync();
 
 module.exports.User = User;
 module.exports.Restaurant = Restaurant;
