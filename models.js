@@ -115,15 +115,12 @@ const Table = sequelize.define('table', {
   }
 });
 
-// const Order = sequelize.define('order', {
-//   items: {
-
-//   },
-//   price: {
-//     type: Sequelize.REAL,
-//     allowNull: false
-//   }
-// });
+const Order = sequelize.define('order', {
+  price: {
+    type: Sequelize.REAL,
+    allowNull: false
+  }
+});
 
 const Section = sequelize.define('section', {
   name: {
@@ -131,6 +128,21 @@ const Section = sequelize.define('section', {
     allowNull: false
   }
 });
+
+// const User = sequelize.define('user', {
+//   name: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   },
+//   emailId: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   },
+//   accountType: { // M-merchant, C-customer
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   }
+// })
 
 Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
@@ -140,14 +152,19 @@ Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'
 Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
 
 const DishAddOn = sequelize.define('dishAddOn', {});
-
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
 AddOn.belongsToMany(Dish, { through: 'dishAddOn' });
 
-//sequelize.sync();
+Order.belongsToMany(Dish, {as: 'Items', through: 'orderItems'});
+Dish.belongsToMany(Order, {as: 'Orders', through: 'orderItems'});
+Restaurant.belongsToMany(Order, {as: 'Orders', through: 'restaurantOrders'});
+Table.belongsToMany(Order, {as: 'Orders', through: 'tableOrders'});
+
+sequelize.sync();
 
 module.exports.User = User;
 module.exports.Restaurant = Restaurant;
 module.exports.Dish = Dish;
 module.exports.AddOn = AddOn;
 module.exports.Section = Section;
+module.exports.Table = Table;
