@@ -5,6 +5,8 @@ const Dish = require('../models').Dish;
 const AddOn = require('../models').AddOn;
 const Section = require('../models').Section;
 const Table = require('../models').Table;
+const Order = require('../models').Order;
+
 
 /* POST add new restaurant */
 router.post('/addNew', function(req, res) {
@@ -289,36 +291,44 @@ router.get('/:restaurantId/menu', function(req, res) {
 	})
 })
 
-// router.get('/restaurantId/orders', function(req, res) {
-// 	var source = '[GET /restaurants/orders]';
-// 	let restaurantId = req.params.restaurantId;
+router.get('/:restaurantId/orders', function(req, res) {
+	var source = '[GET /restaurants/orders]';
+	let restaurantId = req.params.restaurantId;
 
-// 	Restaurant.findById(restaurantId)
-// 	.then(restaurant => {
-// 		restaurant.getOrders({
-// 			attributes: {exclude: ['createdAt','updatedAt']},
-// 		    include: [{
-// 		        model: Dish,
-// 		        as: 'Items',
-// 		        attributes: {exclude: ['createdAt','updatedAt']},
-// 		        through: {attributes:[]},
-// 		        include: [{
-// 			        model: AddOn,
-// 			        as: 'AddOns',
-// 			        attributes: {exclude: ['createdAt','updatedAt']},
-// 			        through: {attributes:[]},
-// 			    }]
-// 		    }]
-// 		})
-// 		.then(orders => {
-// 			res.send(orders);
-// 		})
-// 		.catch(e => {
-// 			console.log(e);
-// 			res.status(500).send("" + e);
-// 		}) 
-// 	})
-// })
+	// Restaurant.findById(restaurantId)
+	// .then(restaurant => {
+		Order.findAll({
+			where: {
+				restaurantId: restaurantId
+			},
+			attributes: {exclude: ['createdAt','updatedAt']},
+			through: {attributes:[]},
+		    include: [{
+		        model: Dish,
+		        as: 'Items',
+		        attributes: {exclude: ['createdAt','updatedAt']},
+		        through: {attributes:[]},
+		        include: [{
+			        model: AddOn,
+			        as: 'orderAddOns',
+			        attributes: {exclude: ['createdAt','updatedAt']},
+			        through: {attributes:[]},
+			    }]
+		    }]
+		})
+		.then(orders => {
+			res.send(orders);
+		})
+		.catch(e => {
+			console.log(e);
+			res.status(500).send("" + e);
+		}) 
+	// })
+	// .catch(e => {
+	// 	console.log(e);
+	// 	res.status(500).send("" + e);
+	// }) 
+})
 
 
 

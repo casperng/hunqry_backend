@@ -147,6 +147,7 @@ const Section = sequelize.define('section', {
 Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
+Restaurant.hasMany(Order, {as: 'orders'});
 
 Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'});
 Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
@@ -154,6 +155,9 @@ Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
 const DishAddOn = sequelize.define('dishAddOn', {});
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
 AddOn.belongsToMany(Dish, { through: 'dishAddOn' });
+
+Dish.belongsToMany(AddOn, {as: 'orderAddOns', through: 'orderDishAddOn' });
+AddOn.belongsToMany(Dish, { through: 'orderDishAddOn' });
 
 Order.belongsToMany(Dish, {as: 'Items', through: 'orderItems'});
 Dish.belongsToMany(Order, {as: 'Orders', through: 'orderItems'});
@@ -168,3 +172,4 @@ module.exports.Dish = Dish;
 module.exports.AddOn = AddOn;
 module.exports.Section = Section;
 module.exports.Table = Table;
+module.exports.Order = Order;
