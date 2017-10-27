@@ -68,6 +68,11 @@ const Restaurant = sequelize.define('restaurant', {
   category: {
   	type: Sequelize.STRING,
 	  allowNull: true,
+  },
+  takeAwayOnly: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: false
   }
 });
 
