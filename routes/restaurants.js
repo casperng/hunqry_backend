@@ -280,6 +280,12 @@ router.get('/:restaurantId/menu', function(req, res) {
 		        through: {attributes:[]},
 		    }]
 	      }]
+	    },
+	    {
+	      model: AddOn,
+	      as: 'AddOns',
+	      attributes: {exclude: ['createdAt','updatedAt']},
+	      through: {attributes:[]},
 	    }],
 	  })
 	.then(restaurants => {
