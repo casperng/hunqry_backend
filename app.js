@@ -9,7 +9,6 @@ var cors = require('cors')
 var models = require('./models');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var restaurants = require('./routes/restaurants');
 var pictures = require('./routes/pictures');
 var orders = require('./routes/orders');
@@ -37,7 +36,6 @@ app.use(cors());
 
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/restaurants', restaurants);
 app.use('/pictures', pictures);
 app.use('/orders', orders);
