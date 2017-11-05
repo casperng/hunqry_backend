@@ -42,15 +42,6 @@ const Restaurant = sequelize.define('restaurant', {
   closeTime: {
   	type: Sequelize.TIME,
   	allowNull: false,
-  },
-  category: {
-  	type: Sequelize.STRING,
-	  allowNull: true,
-  },
-  takeAwayOnly: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: false
   }
 });
 
@@ -112,6 +103,13 @@ const Section = sequelize.define('section', {
   }
 });
 
+const Category = sequelize.define('Category', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
 // const User = sequelize.define('user', {
 //   name: {
 //     type: Sequelize.STRING,
@@ -131,6 +129,9 @@ Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(Order, {as: 'orders'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
+
+Restaurant.belongsToMany(Category, {as: 'Categories', through: 'restaurantCategories'});
+Category.belongsToMany(Restaurant, {as: 'Restaurants', through: 'restaurantCategories'});
 
 Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'});
 Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
@@ -155,3 +156,24 @@ module.exports.AddOn = AddOn;
 module.exports.Section = Section;
 module.exports.Table = Table;
 module.exports.Order = Order;
+module.exports.Category = Category;
+
+//use hunqry;
+// show tables;
+// SET FOREIGN_KEY_CHECKS=0;
+// drop table addons;
+// drop table categories;
+// drop table dishaddons;
+// drop table dishes;
+// drop table dishsections;
+// drop table orderdishaddon;
+// drop table orderitems;
+// drop table orders;
+// drop table restaurantaddons;
+// drop table restaurantcategories;
+// drop table restaurantorders;
+// drop table restaurants;
+// drop table restaurantsections;
+// drop table sections;
+// drop table tableorders;
+// drop table tables;

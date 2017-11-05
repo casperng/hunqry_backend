@@ -6,20 +6,42 @@ const AddOn = require('../models').AddOn;
 const Section = require('../models').Section;
 const Table = require('../models').Table;
 const Order = require('../models').Order;
-
+const Category = require('../models').Category;
 
 /* POST add new restaurant */
 router.post('/addNew', function(req, res) {
   var source = '[POST /restaurants/addNew]';
+  var categories = req.body.categories.split(',');
+
   Restaurant.create({
   	name: req.body.name,
   	address: req.body.address,
   	displayPicture: req.body.displayPicture,
   	openTime: req.body.openTime,
-  	closeTime: req.body.closeTime,
-  	category: req.body.category,
+  	closeTime: req.body.closeTime
   })
   .then(restaurant => {
+  	categories.forEach(category => {
+  		Category.findOrCreate({
+			where: {
+				name: category
+			}
+		})
+		.then(category => {
+			category[0] .addRestaurants(restaurant)
+			.then(() => {
+				;
+			})
+			.catch(e => {
+			  	console.log(source, e);
+			  	res.status(500).send("" + e);
+			})
+		})
+		.catch(e => {
+		  	console.log(source, e);
+		  	res.status(500).send("" + e);
+		})
+  	})
   	console.log(source, 'Success: restaurant:' + restaurant.id + ' created');
   	res.json({
   		status: 'Success'
@@ -203,9 +225,38 @@ router.post('/addAddOnToDish', function(req, res) {
 router.get('/', function(req, res) {
  	var source = '[GET /restaurants/]';	
 
- 	Restaurant.findAll()
+ 	Restaurant.findAll({
+ 		attributes: {exclude: ['createdAt','updatedAt']},
+	    include: [{
+	      model: Category,
+	      as: 'Categories',
+	      attributes: {exclude: ['createdAt','updatedAt']},
+	      through: {attributes:[]},
+	    }]
+ 	})
  	.then(restaurants => {
  		res.send(restaurants);
+ 	})
+ 	.catch(e => {
+		console.log(e);
+		res.status(500).send("" + e);
+	})
+})
+
+router.get('/categories', function(req, res) {
+ 	var source = '[GET /restaurants/categories]';	
+
+ 	Category.findAll({
+ 		attributes: {exclude: ['createdAt','updatedAt']},
+	    include: [{
+	      model: Restaurant,
+	      as: 'Restaurants',
+	      attributes: {exclude: ['createdAt','updatedAt']},
+	      through: {attributes:[]},
+	    }]
+ 	})
+ 	.then(categories => {
+ 		res.send(categories);
  	})
  	.catch(e => {
 		console.log(e);
