@@ -140,6 +140,7 @@ Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(Order, {as: 'orders'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
+Restaurant.hasMany(Section, {as: 'Section'});
 
 Restaurant.belongsToMany(Taxes, {as: 'Taxes', through: 'restaurantTaxes'});
 
@@ -172,7 +173,7 @@ module.exports.Order = Order;
 module.exports.Category = Category;
 module.exports.Taxes = Taxes;
 
-//use hunqry;
+// use hunqry;
 // show tables;
 // SET FOREIGN_KEY_CHECKS=0;
 // drop table addons;
