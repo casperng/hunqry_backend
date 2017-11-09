@@ -134,10 +134,9 @@ router.post('/addDish', function(req, res) {
 		  	description: req.body.description
 		})
 		.then(dish => {
-			Section.findOrCreate({
+			Restaurant.getSections({
 				where: {
-					name: section,
-					restaurantId: restaurantId
+					name: section
 				}
 			})
 			.then(section => {

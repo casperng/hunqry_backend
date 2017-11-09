@@ -148,7 +148,6 @@ Category.belongsToMany(Restaurant, {as: 'Restaurants', through: 'restaurantCateg
 
 Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'});
 Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
-Section.belongsTo(Restaurant);
 
 const DishAddOn = sequelize.define('dishAddOn', {});
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
@@ -174,6 +173,25 @@ module.exports.Category = Category;
 module.exports.Taxes = Taxes;
 
 // use hunqry;
+// show tables;
+// SET FOREIGN_KEY_CHECKS=0;
+// drop table addons;
+// drop table categories;
+// drop table dishaddons;
+// drop table dishes;
+// drop table dishsections;
+// drop table orderdishaddon;
+// drop table orderitems;
+// drop table orders;
+// drop table restaurantaddons;
+// drop table restaurantcategories;
+// drop table restaurantorders;
+// drop table restaurants;
+// drop table restaurantsections;
+// drop table sections;
+// drop table tableorders;
+// drop table tables;
+
 // show tables;
 // SET FOREIGN_KEY_CHECKS=0;
 // drop table addOns;
