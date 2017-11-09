@@ -199,7 +199,7 @@ module.exports.Taxes = Taxes;
 // drop table dishAddOns;
 // drop table dishes;
 // drop table dishSections;
-// drop table orderDishAddon;
+// drop table orderDishAddOn;
 // drop table orderItems;
 // drop table orders;
 // drop table restaurantCategories;

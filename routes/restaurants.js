@@ -123,7 +123,7 @@ router.post('/addTable', function(req, res) {
 router.post('/addDish', function(req, res) {
 	var source = '[POST /restaurants/addDish]';
 	let restaurantId = req.body.restaurantId;
-	let section = req.body.section;
+	let sectionName = req.body.section;
 
 	Restaurant.findById(restaurantId)
 	.then(restaurant => {
@@ -134,23 +134,37 @@ router.post('/addDish', function(req, res) {
 		  	description: req.body.description
 		})
 		.then(dish => {
-			Restaurant.getSections({
+			restaurant.getSections({
 				where: {
-					name: section
+					name: sectionName
 				}
 			})
 			.then(section => {
 				//console.log(section);
-				section[0].addDishes(dish)
-				.then(() =>{
-					restaurant.addSection(section[0])
-					restaurant.addSections(section[0])
-					.then(() => {
-						restaurant.addDishes(dish)
-						.then(dish => {
-							res.json({
-						  		status: 'Success'
-						  	});	
+				if(section[0] == null) {
+					Section.create({
+						name: sectionName
+					})
+					.then(section => {
+						section.addDishes(dish)
+						.then(() => {
+							restaurant.addSections(section)
+							.then(() => {
+								restaurant.addDishes(dish)
+								.then(dish => {
+									res.json({
+								  		status: 'Success'
+								  	});	
+								})
+								.catch(e => {
+									console.log(e);
+									res.status(500).send("" + e);
+								})
+							})
+							.catch(e => {
+								console.log(e);
+								res.status(500).send("" + e);
+							})
 						})
 						.catch(e => {
 							console.log(e);
@@ -161,11 +175,33 @@ router.post('/addDish', function(req, res) {
 						console.log(e);
 						res.status(500).send("" + e);
 					})
-				})
-				.catch(e => {
-					console.log(e);
-					res.status(500).send("" + e);
-				})
+				}
+				else {
+					section[0].addDishes(dish)
+					.then(() =>{
+						restaurant.addSections(section[0])
+						.then(() => {
+							restaurant.addDishes(dish)
+							.then(dish => {
+								res.json({
+							  		status: 'Success'
+							  	});	
+							})
+							.catch(e => {
+								console.log(e);
+								res.status(500).send("" + e);
+							})
+						})
+						.catch(e => {
+							console.log(e);
+							res.status(500).send("" + e);
+						})
+					})
+					.catch(e => {
+						console.log(e);
+						res.status(500).send("" + e);
+					})
+				}
 			})
 			.catch(e => {
 				console.log(e);
