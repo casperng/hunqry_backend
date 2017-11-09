@@ -7,6 +7,7 @@ const Section = require('../models').Section;
 const Table = require('../models').Table;
 const Order = require('../models').Order;
 const Category = require('../models').Category;
+const Taxes = require('../models').Taxes;
 
 /* POST add new restaurant */
 router.post('/addNew', function(req, res) {
@@ -52,6 +53,39 @@ router.post('/addNew', function(req, res) {
   	res.status(500).send("" + e);
   })
 });
+
+router.post('/addTax', function(req, res) {
+	var source = '[POST /restaurants/addTaxes]';
+	let restaurantId = req.body.restaurantId;
+
+	Taxes.create({
+		name: req.body.name,
+		value: req.body.value
+	})
+	.then(tax => {
+		Restaurant.findById(restaurantId)
+		.then(restaurant => {
+			restaurant.addTaxes(tax)
+			.then(() => {
+				res.json({
+			  		status: 'Success'
+			 	})
+			})
+			.catch(e => {
+			  	console.log(source, e);
+			  	res.status(500).send("" + e);
+			})
+		})
+		.catch(e => {
+		  	console.log(source, e);
+		  	res.status(500).send("" + e);
+		  })
+	})
+	.catch(e => {
+	  console.log(source, e);
+	  res.status(500).send("" + e);
+	})
+})
 
 router.post('/addTable', function(req, res) {
 	var source = '[POST /restaurants/addTable]';
@@ -331,6 +365,12 @@ router.get('/:restaurantId/menu', function(req, res) {
 		        through: {attributes:[]},
 		    }]
 	      }]
+	    },
+	    {
+	    	model: Taxes,
+	    	as: 'Taxes',
+	    	attributes: {exclude: ['createdAt','updatedAt']},
+	      	through: {attributes:[]},
 	    }],
 	  })
 	.then(restaurants => {

@@ -103,12 +103,23 @@ const Section = sequelize.define('section', {
   }
 });
 
-const Category = sequelize.define('Category', {
+const Category = sequelize.define('category', {
   name: {
     type: Sequelize.STRING,
     allowNull: false
   }
 });
+
+const Taxes = sequelize.define('taxes', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  value: {
+    type: Sequelize.REAL,
+    allowNull: false
+  }
+})
 
 // const User = sequelize.define('user', {
 //   name: {
@@ -129,6 +140,8 @@ Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(Order, {as: 'orders'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
+
+Restaurant.belongsToMany(Taxes, {as: 'Taxes', through: 'restaurantTaxes'});
 
 Restaurant.belongsToMany(Category, {as: 'Categories', through: 'restaurantCategories'});
 Category.belongsToMany(Restaurant, {as: 'Restaurants', through: 'restaurantCategories'});
@@ -157,6 +170,7 @@ module.exports.Section = Section;
 module.exports.Table = Table;
 module.exports.Order = Order;
 module.exports.Category = Category;
+module.exports.Taxes = Taxes;
 
 //use hunqry;
 // show tables;
