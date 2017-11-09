@@ -140,7 +140,6 @@ Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
 Restaurant.hasMany(Order, {as: 'orders'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
-Restaurant.hasMany(Section, {as: 'Section'});
 
 Restaurant.belongsToMany(Taxes, {as: 'Taxes', through: 'restaurantTaxes'});
 
@@ -149,6 +148,7 @@ Category.belongsToMany(Restaurant, {as: 'Restaurants', through: 'restaurantCateg
 
 Restaurant.belongsToMany(Section, {as: 'Sections', through: 'restaurantSections'});
 Section.belongsToMany(Dish, {as: 'Dishes', through: 'dishSections'});
+Section.belongsTo(Restaurant);
 
 const DishAddOn = sequelize.define('dishAddOn', {});
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
@@ -176,19 +176,20 @@ module.exports.Taxes = Taxes;
 // use hunqry;
 // show tables;
 // SET FOREIGN_KEY_CHECKS=0;
-// drop table addons;
+// drop table addOns;
 // drop table categories;
-// drop table dishaddons;
+// drop table dishAddOns;
 // drop table dishes;
-// drop table dishsections;
-// drop table orderdishaddon;
-// drop table orderitems;
+// drop table dishSections;
+// drop table orderDishAddon;
+// drop table orderItems;
 // drop table orders;
-// drop table restaurantaddons;
-// drop table restaurantcategories;
-// drop table restaurantorders;
+// drop table restaurantCategories;
+// drop table restaurantOrders;
 // drop table restaurants;
-// drop table restaurantsections;
+// drop table restaurantSections;
 // drop table sections;
-// drop table tableorders;
+// drop table tableOrders;
 // drop table tables;
+// drop table taxes;
+// drop table restaurantTaxes;
