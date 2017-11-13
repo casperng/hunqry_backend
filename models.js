@@ -46,6 +46,14 @@ const Restaurant = sequelize.define('restaurant', {
   paylahLink: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  takeAwayOnly: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  closedNow: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 
@@ -66,6 +74,10 @@ const Dish = sequelize.define('dish', {
   description: {
   	type: Sequelize.STRING,
   	allowNull: true
+  },
+  soldOut: {
+    type: Sequelize.STRING,
+    defaultValue: false
   }
 });
 
@@ -217,4 +229,3 @@ module.exports.Taxes = Taxes;
 // drop table restaurantTaxes;
 
 
-//http:www.dbs.com.sg/personal/mobile/paylink/index.html?tranRef=7095T5obJu
