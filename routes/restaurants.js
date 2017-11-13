@@ -20,7 +20,9 @@ router.post('/addNew', function(req, res) {
   	displayPicture: req.body.displayPicture,
   	openTime: req.body.openTime,
   	closeTime: req.body.closeTime,
-  	paylahLink: req.body.paylahLink
+  	paylahLink: req.body.paylahLink,
+  	takeAwayOnly: req.body.takeAwayOnly,
+  	closedNow: req.body.closedNow
   })
   .then(restaurant => {
   	categories.forEach(category => {
