@@ -134,7 +134,8 @@ router.post('/addDish', function(req, res) {
 			name: req.body.name,
 		  	displayPicture: req.body.displayPicture,
 		  	price: req.body.price,
-		  	description: req.body.description
+		  	description: req.body.description,
+		  	soldOut: req.body.soldOut
 		})
 		.then(dish => {
 			restaurant.getSections({
