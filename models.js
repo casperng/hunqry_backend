@@ -76,7 +76,7 @@ const Dish = sequelize.define('dish', {
   	allowNull: true
   },
   soldOut: {
-    type: Sequelize.STRING,
+    type: Sequelize.BOOLEAN,
     defaultValue: false
   }
 });
