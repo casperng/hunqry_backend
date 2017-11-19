@@ -30,9 +30,9 @@ router.post('/upload', uploader.single('file'), function(req, res) {
     )
 });
 
-router.post('/restaurant/changePicture', function(req, res) {
-	var source = '[POST /picture/restaurant/changePicture]';
-	let restaurantId = req.body.restaurantId;
+router.put('/:restaurantId/restaurant/changePicture', function(req, res) {
+	var source = '[PUT /picture/restaurant/changePicture]';
+	let restaurantId = req.params.restaurantId;
 
 	Restaurant.findById(restaurantId)
 	.then(restaurant => {
@@ -53,10 +53,10 @@ router.post('/restaurant/changePicture', function(req, res) {
 	})
 })
 
-router.post('/dish/changePicture', function(req, res) {
+router.put('/:restaurantId/dish/:dishId/changePicture', function(req, res) {
 	var source = '[POST /picture/dish/changePicture]';
-	let restaurantId = req.body.restaurantId;
-	let dishId = req.body.dishId;
+	let restaurantId = req.params.restaurantId;
+	let dishId = req.params.dishId;
 
 	Restaurant.findById(restaurantId)
 	.then(restaurant => {
@@ -88,10 +88,10 @@ router.post('/dish/changePicture', function(req, res) {
 	})
 })
 
-router.post('/addOn/changePicture', function(req, res) {
-	var source = '[POST /picture/addOn/changePicture]';
-	let restaurantId = req.body.restaurantId;
-	let addOnId = req.body.addOnId;
+router.put('/:restaurantId/addOn/:addOnId/changePicture', function(req, res) {
+	var source = '[PUT /picture/addOn/changePicture]';
+	let restaurantId = req.params.restaurantId;
+	let addOnId = req.params.addOnId;
 
 	Restaurant.findById(restaurantId)
 	.then(restaurant => {

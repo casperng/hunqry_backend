@@ -75,10 +75,6 @@ const Dish = sequelize.define('dish', {
   	type: Sequelize.STRING,
   	allowNull: true
   },
-  soldOut: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false
-  }
 });
 
 const AddOn = sequelize.define('addOn', {
@@ -91,21 +87,6 @@ const AddOn = sequelize.define('addOn', {
     allowNull: true,
     unique: true
   },
-  price: {
-    type: Sequelize.REAL,
-    allowNull: false
-  }
-});
-
-const Table = sequelize.define('table', {
-  tableId: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    primaryKey: true
-  }
-});
-
-const Order = sequelize.define('order', {
   price: {
     type: Sequelize.REAL,
     allowNull: false
@@ -137,24 +118,8 @@ const Taxes = sequelize.define('taxes', {
   }
 })
 
-// const User = sequelize.define('user', {
-//   name: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   },
-//   emailId: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   },
-//   accountType: { // M-merchant, C-customer
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   }
-// })
 
-Restaurant.hasMany(Table, {as: 'Tables'});
 Restaurant.hasMany(Dish, {as: 'Dishes'});
-Restaurant.hasMany(Order, {as: 'orders'});
 Restaurant.hasMany(AddOn, {as: 'AddOns'});
 
 Restaurant.belongsToMany(Taxes, {as: 'Taxes', through: 'restaurantTaxes'});
@@ -169,63 +134,11 @@ const DishAddOn = sequelize.define('dishAddOn', {});
 Dish.belongsToMany(AddOn, { as: 'AddOns', through: 'dishAddOn' });
 AddOn.belongsToMany(Dish, { through: 'dishAddOn' });
 
-Dish.belongsToMany(AddOn, {as: 'orderAddOns', through: 'orderDishAddOn' });
-AddOn.belongsToMany(Dish, { through: 'orderDishAddOn' });
-
-Order.belongsToMany(Dish, {as: 'Items', through: 'orderItems'});
-Dish.belongsToMany(Order, {as: 'Orders', through: 'orderItems'});
-Restaurant.belongsToMany(Order, {as: 'Orders', through: 'restaurantOrders'});
-Table.belongsToMany(Order, {as: 'Orders', through: 'tableOrders'});
-
 sequelize.sync();
 
 module.exports.Restaurant = Restaurant;
 module.exports.Dish = Dish;
 module.exports.AddOn = AddOn;
 module.exports.Section = Section;
-module.exports.Table = Table;
-module.exports.Order = Order;
 module.exports.Category = Category;
 module.exports.Taxes = Taxes;
-
-// use hunqry;
-// show tables;
-// SET FOREIGN_KEY_CHECKS=0;
-// drop table addons;
-// drop table categories;
-// drop table dishaddons;
-// drop table dishes;
-// drop table dishsections;
-// drop table orderdishaddon;
-// drop table orderitems;
-// drop table orders;
-// drop table restaurantaddons;
-// drop table restaurantcategories;
-// drop table restaurantorders;
-// drop table restaurants;
-// drop table restaurantsections;
-// drop table sections;
-// drop table tableorders;
-// drop table tables;
-
-// show tables;
-// SET FOREIGN_KEY_CHECKS=0;
-// drop table addOns;
-// drop table categories;
-// drop table dishAddOns;
-// drop table dishes;
-// drop table dishSections;
-// drop table orderDishAddOn;
-// drop table orderItems;
-// drop table orders;
-// drop table restaurantCategories;
-// drop table restaurantOrders;
-// drop table restaurants;
-// drop table restaurantSections;
-// drop table sections;
-// drop table tableOrders;
-// drop table tables;
-// drop table taxes;
-// drop table restaurantTaxes;
-
-

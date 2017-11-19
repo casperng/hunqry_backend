@@ -11,7 +11,6 @@ var models = require('./models');
 var index = require('./routes/index');
 var restaurants = require('./routes/restaurants');
 var pictures = require('./routes/pictures');
-var orders = require('./routes/orders');
 
 var app = express();
 
@@ -38,7 +37,6 @@ app.use(cors());
 app.use('/', index);
 app.use('/restaurants', restaurants);
 app.use('/pictures', pictures);
-app.use('/orders', orders);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
